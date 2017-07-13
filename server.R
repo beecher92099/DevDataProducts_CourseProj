@@ -7,22 +7,24 @@
 #    http://shiny.rstudio.com/
 #
 
+# load the necessary libraries
 library(shiny)
 library(ggplot2)
 library(maps)
 library(mapdata)
 
-# Define server logic required to draw a histogram
+# Define server logic required to draw the map and selected state
 shinyServer(function(input, output) {
   
+  # load state mapping data
   states <- map_data("state")
   sel_state <- reactive({
                          subset(states, region %in% input$sel_state)
                         })
    
-  output$distPlot <- renderPlot({
+  output$mapPlot <- renderPlot({
     
-    # draw the histogram with the specified number of bins
+    # draw the US map with the selected state highlighted in blue
     ggplot(data = states) + 
       geom_polygon(aes(x = long, y = lat, group = group), fill = "grey", color = "black") + 
       coord_fixed(1.3) +
